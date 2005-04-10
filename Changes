@@ -1,0 +1,6 @@
+Revision history for Perl extension PerlActor.
+
+0.01  Wed Apr  6 19:59:24 2005
+	- original version; created by h2xs 1.23 with options
+		-AX -n PerlActor
+
