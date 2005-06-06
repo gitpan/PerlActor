@@ -20,10 +20,31 @@ sub setListener
 	$self->{listener} = shift;
 }
 
+sub getListener
+{
+	my $self = shift;
+	return $self->{listener};
+}
+
 sub setContext
 {
 	my $self = shift;
 	$self->{context} = shift;
+}
+
+sub getContext
+{
+	my $self = shift;
+	return $self->{context};
+}
+
+sub trim
+{
+	my $self = shift;
+	my $string = shift;
+	$string =~ s/^\s+//;
+	$string =~ s/\s+$//;
+	return $string;
 }
 
 #===============================================================================================

@@ -13,7 +13,7 @@ sub execute
 	my @keys = $self->getParams();
 	foreach my $key (@keys)
 	{
-		$self->{context}->{calculator}->pressKey($key);
+		$self->getContext()->{calculator}->pressKey($key);
 	}
 }
 

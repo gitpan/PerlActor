@@ -18,7 +18,7 @@ our @EXPORT = qw(
 	
 );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 
 # Preloaded methods go here.
@@ -78,7 +78,7 @@ distribution.  It tests a toy calculator "application":
     # Create a new calculator application
     NewCalculator
 
-    # Ensure that the display reads '0' intially
+    # Ensure that the display reads '0', initially
     CheckDisplayReads  0
 
     # Press key '1', then key '0'

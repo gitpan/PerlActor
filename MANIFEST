@@ -42,3 +42,4 @@ t/tlib/PerlActor/test/CommandTest.pm
 t/tlib/PerlActor/test/LineTokenizerTest.pm
 t/tlib/PerlActor/test/ScriptTest.pm
 t/tlib/PerlActor/test/TestCase.pm
+META.yml                                 Module meta-data (added by MakeMaker)

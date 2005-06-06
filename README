@@ -47,7 +47,7 @@ distribution.  It tests a toy calculator "application":
     # Create a new calculator application
     NewCalculator
 
-    # Ensure that the display reads '0' intially
+    # Ensure that the display reads '0', initially
     CheckDisplayReads  0
 
     # Press key '1', then key '0'
@@ -105,6 +105,9 @@ DEPENDENCIES
 This module requires these other modules and libraries:
 
   Test::Unit - needed for running PerlActor's own unit test suite.
+  
+  (Note: Test::Unit 0.24 does not seem to install from CPAN without doing
+  'force install Test::Unit'.)
 
 COPYRIGHT AND LICENCE
 

@@ -5,7 +5,7 @@ use fields qw( run passed failed aborted failedReport abortedReport started ende
 
 $| = 1;
 
-use Benchmark qw( :hireswallclock );
+use Benchmark;
 
 #===============================================================================================
 # Public Methods
@@ -29,7 +29,7 @@ sub end
 
 	my $runTime = timediff($self->{ended}, $self->{started});
 	
-	print "\n" . timestr($runTime);
+	print "\n" . $self->trim(timestr($runTime));
 	print "\nRun: $self->{run}, Passed: $self->{passed}, Failed: $self->{failed}, Aborted: $self->{aborted}.\n";
 	
 	$self->_printReports($self->{failedReport},'FAILED');
@@ -52,11 +52,7 @@ sub _printReports
 	{
 		print "\n!!!$label!!!\n";
 		my $count = 0;
-		foreach my $entry (@{$reports})
-		{
-			$count++;
-			print "\n$count) $entry\n";
-		}
+		map { $count++; print "\n$count) $_\n" } @{$reports};
 	}
 }
 
@@ -130,8 +126,8 @@ sub _stopClock
 
 sub _printHeader
 {
-	print "\nRunning Acceptance Tests at " . `date`;
-	print "==========================================================\n";
+	print "\nRunning Acceptance Tests\n";
+	print "========================\n";
 }
 
 # Keep Perl happy.

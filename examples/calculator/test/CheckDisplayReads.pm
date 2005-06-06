@@ -11,7 +11,7 @@ sub execute
 {
 	my $self = shift;
 	my $expected = $self->getParam(0);
-	my $displayReads = $self->{context}->{calculator}->getDisplay();
+	my $displayReads = $self->getContext()->{calculator}->getDisplay();
 	$self->assert( $displayReads eq $expected, "Display is wrong: expected $expected, got $displayReads")
 }
 

@@ -6,43 +6,33 @@ use base 'PerlActor::Command';
 use PerlActor::Exception;
 use File::Find;
 
-my @TESTS;
-
 #===============================================================================================
 # Public Methods
 #===============================================================================================
 
 sub execute
 {
-	my $self = shift;
+	my $self = shift;	
 	my $dir = $self->getParam(0);
 	
 	throw PerlActor::Exception("cannot collect test scripts: directory '$dir' does not exist!")
 		unless -e $dir;
 		
-	$self->buildTestList($dir);
-
-	foreach my $test (@TESTS)
-	{
-		$self->executeScript($test);
-	}
+	$self->findAndExecuteScriptsIn($dir);
 }
 
-sub buildTestList
+sub findAndExecuteScriptsIn
 {	
 	my ($self, $dir) = @_;	
-	find({ wanted => sub {$self->processFile}, follow => 1 }, $dir);
+	find({ wanted => sub {$self->processFile()}, follow => 1, no_chdir => 1 }, $dir);
 }
 
 sub processFile
 {	
 	my $self = shift;	
 	my $file = $File::Find::name;
-
 	return unless $self->fileIsAPerlActorTest($file);
-	
-	push @TESTS, $file;
-	
+	$self->executeScript($file);
 }
 
 sub fileIsAPerlActorTest

@@ -50,7 +50,7 @@ sub executeScript
 			
 	my @lines = <SCRIPT>;
 	my $script = new PerlActor::Script("$file");
-	$script->setListener($self->{listener});
+	$script->setListener($self->getListener());
 	$script->setLines(@lines);
 	$script->execute();			
 	close SCRIPT;

@@ -11,7 +11,7 @@ use Calculator;
 sub execute
 {
 	my $self = shift;
-	$self->{context}->{calculator} = new Calculator();
+	$self->getContext()->{calculator} = new Calculator();
 }
 
 #===============================================================================================

@@ -16,7 +16,9 @@ sub create
 
 	my @commandArgs = @_;
 	my $error = '';
-	foreach my $class ("PerlActor::Command::$commandName", $commandName)
+	
+	#TODO Refactor by extracting standard namespaces 
+	foreach my $class ("PerlActor::Command::$commandName", "PerlActor::Command::Web::$commandName", $commandName)
 	{
 		unless ($error = $self->_compile($class))
 		{
@@ -24,6 +26,7 @@ sub create
 		}
 		last unless ($error =~ /Can't locate/);
 	}
+	
 	return $self->create('Unknown', $error);
 
 }

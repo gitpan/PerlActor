@@ -20,7 +20,7 @@ sub new
 	my $self = $proto->SUPER::new(@_);
 	$self->{name} = shift;
 	$self->{lines} = [];
-	$self->{context} = {};
+	$self->setContext( {} );
 	return $self;
 }
 
@@ -40,33 +40,26 @@ sub getName
 sub execute
 {
 	my $self = shift;
-	$self->{listener}->scriptStarted($self);	
 
-	$self->{currentLineNumber} = 0;
+	my $listener = $self->getListener();
+	$listener->scriptStarted($self);	
+
 	try
 	{
-		foreach my $line (@{$self->{lines}})
-		{
-			chomp $line;
-			$self->{currentLine} = $line;
-			$self->{currentLineNumber}++;			
-			my $command = $self->_parseLine($line);
-			next unless $command;
-			$self->executeCommand($command);
-		}
-		$self->{listener}->scriptPassed($self);		
-		$self->{listener}->scriptEnded($self);
+		$self->_processLines();
+		$listener->scriptPassed($self);
+		$listener->scriptEnded($self);
 	}
 	catch PerlActor::Exception::CommandFailed with
 	{
 		my $exception = shift;
-		$self->{listener}->scriptFailed($self, $exception);
-		$self->{listener}->scriptEnded($self);
+		$listener->scriptFailed($self, $exception);
+		$listener->scriptEnded($self);
 	}
 	catch PerlActor::Exception::CommandAborted with
 	{
 		my $exception = shift;
-		$self->{listener}->scriptAborted($self, $exception);		
+		$listener->scriptAborted($self, $exception);
 	};
 }
 
@@ -74,27 +67,29 @@ sub executeCommand
 {
 	my $self = shift;
 	my $command = shift;
-	$command->setContext($self->{context});
-	$command->setListener($self->{listener});
-	$self->{listener}->commandStarted($self, $command);
+
+	my $listener = $self->getListener();
+	$command->setContext($self->getContext());
+	$command->setListener($listener);
+	$listener->commandStarted($self, $command);
 	my $success;
 	try
 	{
 		$command->execute();
-		$self->{listener}->commandPassed($self, $command);				
-		$self->{listener}->commandEnded($self, $command);	
+		$listener->commandPassed($self, $command);
+		$listener->commandEnded($self, $command);	
 	}
 	catch PerlActor::Exception::AssertionFailure with
 	{
 		my $exception = shift;
-		$self->{listener}->commandFailed($self, $command, $exception);
-		$self->{listener}->commandEnded($self, $command);
+		$listener->commandFailed($self, $command, $exception);
+		$listener->commandEnded($self, $command);
 		throw PerlActor::Exception::CommandFailed("$exception\n");
 	}
 	otherwise
 	{
 		my $exception = shift;
-		$self->{listener}->commandAborted($self, $command, $exception);
+		$listener->commandAborted($self, $command, $exception);
 		throw PerlActor::Exception::CommandAborted("$exception\n");
 	};
 }
@@ -109,7 +104,8 @@ sub getTraceInfo
 {
 	my $self = shift;
 	my $name = $self->getName();
-	return "in $name at '$self->{currentLine}', line $self->{currentLineNumber}";
+	my $line = $self->trim($self->{currentLine});
+	return "in $name at '$line', line $self->{currentLineNumber}";
 }
 
 #===============================================================================================
@@ -141,6 +137,28 @@ sub _parseLine
 	my $command = $factory->create(@tokens);
 	
 	return $command;
+}
+
+sub _processLines
+{
+	my $self = shift;
+
+	$self->{currentLineNumber} = 0;
+	foreach my $line (@{$self->{lines}})
+	{
+		$self->_processLine($line);
+	}
+}
+
+sub _processLine
+{
+	my ($self, $line) = @_;
+	chomp $line;
+	$self->{currentLine} = $line;
+	$self->{currentLineNumber}++;
+	my $command = $self->_parseLine($line);
+	return unless $command;
+	$self->executeCommand($command);
 }
 
 # Keep Perl happy.

@@ -6,16 +6,16 @@ NewCalculator
 
 CheckDisplayReads	0
 
-PressKeys		1
+PressKeys			1
 CheckDisplayReads	1
 
-PressKeys		X
+PressKeys			X
 CheckDisplayReads	1
 
-PressKeys		1
+PressKeys			1
 CheckDisplayReads	1
 
-PressKeys		=
+PressKeys			=
 CheckDisplayReads	1
 
 # 2 X 3 = 6
@@ -24,16 +24,16 @@ NewCalculator
 
 CheckDisplayReads	0
 
-PressKeys		2
+PressKeys			2
 CheckDisplayReads	2
 
-PressKeys		X
+PressKeys			X
 CheckDisplayReads	2
 
-PressKeys		3
+PressKeys			3
 CheckDisplayReads	3
 
-PressKeys		=
+PressKeys			=
 CheckDisplayReads	6
 
 

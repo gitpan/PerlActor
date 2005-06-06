@@ -10,7 +10,7 @@ use base 'PerlActor::Command';
 sub execute
 {
 	my $self = shift;
-	$self->{context}->{dummy_was_here} = 1;
+	$self->getContext()->{dummy_was_here} = 1;
 }
 
 #===============================================================================================

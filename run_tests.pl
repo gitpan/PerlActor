@@ -1,5 +1,3 @@
-#!/usr/bin/perl -w
-
 use strict;
 use lib qw( lib t/tlib );
 use Test::Unit::TestRunner;
@@ -15,8 +13,8 @@ else
 	@tests = ('PerlActor::test::AllTests');
 }
 
-print "\nRunning Test at " . `date`;
-print "==========================================================\n";
+print "\nRunning Tests\n";
+print "==============\n";
 my $testrunner = Test::Unit::TestRunner->new();
 
 while (my $test = shift @tests)
